@@ -1,9 +1,12 @@
 import numpy as np
-from cmath import sqrt
 
 
 def euclidean_dist(x, y):
     """
+    Calculate the euclidean distance between 2 vectors
+    :param `x` N-dimentional vector
+    :param `y` N-dimentional vector
+    :return Euclidean distance
     """
     res = 0
     for i in range(len(x)):
@@ -13,6 +16,10 @@ def euclidean_dist(x, y):
 
 def manhattan_dist(x, y):
     """
+    Calculate the manhattan distance between 2 vectors
+    :param `x` N-dimentional vector
+    :param `y` N-dimentional vector
+    :return Manhattan distance
     """
     return sum([abs(x[i] - y[i]) for i in range(len(x))])
 
