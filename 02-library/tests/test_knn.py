@@ -7,6 +7,9 @@ from sklearn.model_selection._split import train_test_split
     ("tests/test_files/dataset_knn_1.csv"),
 ])
 def test_knn_small_dataset(datasetPath):
+    """
+    Test the performance of the algorithm on a small dataset
+    """
     df = pd.read_csv(datasetPath)
     df['Points'] = df['Points'].apply(lambda x: eval(x))
 
@@ -23,7 +26,10 @@ def test_knn_small_dataset(datasetPath):
 @pytest.mark.parametrize('datasetPath', [
     ("tests/test_files/dataset_iris_knn.csv"),
 ])
-def test_knn_large_dataset(datasetPath):
+def test_knn_medium_dataset(datasetPath):
+    """
+    Test the performance of the algorithm on a medium dataset
+    """
     df = pd.read_csv(datasetPath)
     x = df.iloc[:, :4].values
     y = df['Species'].values
@@ -39,6 +45,9 @@ def test_knn_large_dataset(datasetPath):
     assert 1.0 == (sum(y_test[:30] == predictions) / len(predictions))
 
 def test_out_of_bounds():
+    """
+    Test out of bounds k
+    """
     try:
         knn = KNN([0,0], [1], -1)
     except ValueError as e:
