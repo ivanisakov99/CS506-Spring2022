@@ -4,6 +4,9 @@ with open('README.md', 'r') as f:
     long_description = f.read()
 
 tests_require = [
+  'numpy',
+  'pandas',
+  'sklearn',
   'pytest',
   'pytest-cov',
   'testfixtures',
