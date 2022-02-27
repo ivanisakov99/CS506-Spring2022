@@ -37,4 +37,3 @@ def test_matrix_det_not_square(matrixPath):
         matrix.get_determinant(mat)
     except ValueError as e:
         assert str(e) == 'Matrix must be square'
-

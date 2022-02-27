@@ -1,7 +1,7 @@
 import pytest
 import random
 
-from cs506 import kmeans,read
+from cs506 import kmeans, read
 
 
 def clustered_all_points(clustering, dataset):
@@ -51,13 +51,13 @@ def test_kmeans_when_k_is_2(datasetPath, expected1, expected2):
             clustering = new_clustering
             cost = new_cost
 
-
     assert len(clustering.keys()) == 2
     assert clustered_all_points(clustering, dataset) is True
     clustered = []
     for assignment in clustering:
         clustered.append(clustering[assignment])
-    assert clustered.sort() == [expected_clustering1, expected_clustering2].sort()
+    assert clustered.sort() == [expected_clustering1,
+                                expected_clustering2].sort()
 
 
 @pytest.mark.parametrize('datasetPath,expected1,expected2,expected3', [
@@ -83,8 +83,22 @@ def test_kmeans_when_k_is_3(datasetPath, expected1, expected2, expected3):
 
     assert len(clustering.keys()) == 3
     assert clustered_all_points(clustering, dataset) is True
-    
+
     clustered = []
     for assignment in clustering:
         clustered.append(clustering[assignment])
-    assert clustered.sort() == [expected_clustering1, expected_clustering2, expected_clustering3].sort()
+    assert clustered.sort() == [expected_clustering1,
+                                expected_clustering2, expected_clustering3].sort()
+
+
+@pytest.mark.parametrize('datasetPath', [
+    ("tests/test_files/dataset_1.csv"),
+])
+def test_kmeans_pp_edge_cases(datasetPath):
+    random.seed(1)
+    dataset = read.read_csv(datasetPath)
+
+    try:
+        clustering = kmeans.k_means_pp(dataset, -1)
+    except ValueError as e:
+        assert str(e) == 'lengths must be in [1, len(dataset)]'
