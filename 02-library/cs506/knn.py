@@ -1,3 +1,4 @@
+from cs506.sim import euclidean_dist
 class KNN():
     def __init__(self, points, labels, k) -> None:
         """
@@ -7,20 +8,11 @@ class KNN():
         - `k`: K-nearest neighbours to choose from.
         """
         if k < 1 or k > len(points):
-            raise ValueError('k needs to be in range')
+            raise ValueError('k needs to be in range!')
         self.__points = points
         self.__labels = labels
         self.__k = k
         return
-
-    def __euclideanDistance(self, point1, point2):
-        """
-        Calculate the euclidean distance between 2 points.
-        """
-        dist = 0
-        for i in range(len(point1)):
-            dist += (point1[i] - point2[i])**2
-        return dist**(1/2)
 
     def __getNeighbours(self, test_point):
         """
@@ -29,7 +21,7 @@ class KNN():
         distances = []
         for point, label in zip(self.__points, self.__labels):
             distances.append(
-                (self.__euclideanDistance(point, test_point), point, label)
+                (euclidean_dist(point, test_point), point, label)
             )
 
         distances.sort(key=lambda x : x[0])
@@ -39,7 +31,18 @@ class KNN():
             neighbours.append(distances[i][1:])
         return neighbours
 
-    def predict(self, test_point):
+    def __predictClass(self, neighbouring_classes, method='Majority Vote'):
+        """
+        Aggregation method to predict a class from the `k` nearest neighbours.
+        :param neighbouring_classes - The k nearest classes.
+        :return class - The class of the test point.
+        """
+        if method == 'Majority Vote':
+            return max(set(neighbouring_classes), key=neighbouring_classes.count)
+        else:
+            raise ValueError('Aggregation method needs to be selected from the list!')
+
+    def predict(self, test_point, method="Majority Vote"):
         """
         Predict the class of the test point given the `k` nearest neighbours.
         :param test_point Predict the class of this point.
@@ -47,4 +50,4 @@ class KNN():
         """
         neighbours = self.__getNeighbours(test_point)
         classes = [point[-1] for point in neighbours]
-        return max(set(classes), key=classes.count)
+        return self.__predictClass(classes, method)
